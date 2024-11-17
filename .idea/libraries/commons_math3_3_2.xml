@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="commons-math3-3.2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Downloads/Lib/commons-math3-3.2.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Lib/JOpenSurf.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Lib/imageFilters.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Lib/lire.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Lib/opencv-4100.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Lib/weka.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Lib/wekaDeeplearning4j-1.7.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/Downloads/Lib/opencv-4100.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Lib/opencv-4100.jar!/" />
+    </SOURCES>
+  </library>
+</component>
