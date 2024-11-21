@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+    <header>
+        <resultCode>00</resultCode>
+        <resultMsg>NORMAL_SERVICE</resultMsg>
+    </header>
+    <body>
+        <dataType>XML</dataType>
+        <items>
+            <item>
+                <baseDate>20220531</baseDate>
+                <baseTime>0930</baseTime>
+                <category>PTY</category>
+                <fcstDate>20220531</fcstDate>
+                <fcstTime>1000</fcstTime>
+                <fcstValue>0</fcstValue>
+                <nx>58</nx>
+                <ny>125</ny>
+            </item>
+        </items>
+        <numOfRows>60</numOfRows>
+        <pageNo>1</pageNo>
+        <totalCount>60</totalCount>
+    </body>
+</response>

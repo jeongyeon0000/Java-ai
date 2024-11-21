@@ -9,7 +9,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public class Weather
+public class Today
 {
     public static void main(String[] args)
     {
@@ -44,8 +44,8 @@ public class Weather
             LocalDateTime t = LocalDateTime.now().minusMinutes(30); // 현재 시각 30분전
 
             URL url = new URL(
-                    "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
-                            + "?ServiceKey=발급받은_인증키값" // 서비스키
+                    "\thttp://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
+                            + "?ServiceKey=hp2nMhDfaycAzWeYtdBtAyoY4H4%2F8ArVQim7XrByjLDJ3c7rKKGbaD90YNoViKi7cuLt2RET3cyCIJqlfwzbeA%3D%3D" // 서비스키
                             //	+ "&pageNo=1" // 페이지번호 Default: 1
                             + "&numOfRows=60" // 한 페이지 결과 수 (10개 카테고리값 * 6시간)
                             //	+ "&dataType=XML" // 요청자료형식(XML/JSON) Default: XML

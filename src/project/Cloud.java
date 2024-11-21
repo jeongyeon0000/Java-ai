@@ -15,7 +15,7 @@ import java.util.Map;
 import org.jfree.chart.plot.PlotOrientation;
 import java.awt.*;
 
-public class WeatherForecast {
+public class Cloud {
 
     public static void main(String[] args) {
         // API URL 및 인증키 설정
