@@ -44,7 +44,7 @@ public class ColdWaveGraph {
         chart.getLegend().setItemFont(font);
 
         // 그래프 표시를 위한 JFrame 생성
-        JFrame frame = new JFrame("Cold Wave Alerts");
+        JFrame frame = new JFrame("날씨와 자연재해");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // 그래프 패널 추가
@@ -65,4 +65,3 @@ public class ColdWaveGraph {
         frame.setVisible(true);
     }
 }
-

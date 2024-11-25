@@ -9,35 +9,38 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
 
-public class HeatWaveGraph {
-    public static void displayGraph(Map<Integer, Double> maxTemperatures, Map<Integer, Integer> heatWaveCounts) {
+public class TyphoonGraph {
+    public static void main(String[] args) {
+        // 태풍 횟수 데이터
+        int[] years = {2020, 2021, 2022, 2023};
+        int[] typhoonCounts = {23, 22, 25, 17};
+
+        // 데이터셋 생성
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-        for (Integer year : maxTemperatures.keySet()) {
-
-            dataset.addValue(heatWaveCounts.getOrDefault(year, 0), "폭염 횟수 (회)", year.toString());
+        for (int i = 0; i < years.length; i++) {
+            dataset.addValue(typhoonCounts[i], "태풍 횟수", Integer.toString(years[i]));
         }
 
-        JFreeChart chart = ChartFactory.createLineChart(
-                "연도별 최고기온 및 폭염 횟수", // 제목
-                "연도", // X축
-                "값", // Y축
+        // 차트 생성
+        JFreeChart chart = ChartFactory.createBarChart(
+                "연도별 태풍 횟수", // 제목
+                "연도",           // X축 라벨
+                "횟수",           // Y축 라벨
                 dataset
         );
 
-        Font font = new Font("맑은 고딕", Font.PLAIN, 12); // 맑은 고딕 폰트 사용
+        // 폰트 설정
+        Font font = new Font("맑은 고딕", Font.PLAIN, 12);
         chart.getTitle().setFont(font); // 차트 제목 폰트
-        chart.getCategoryPlot().getDomainAxis().setLabelFont(font); // x축 레이블 폰트
-        chart.getCategoryPlot().getRangeAxis().setLabelFont(font); // y축 레이블 폰트
-        chart.getCategoryPlot().getDomainAxis().setTickLabelFont(font); // x축 눈금 폰트
-        chart.getCategoryPlot().getRangeAxis().setTickLabelFont(font); // y축 눈금 폰트
-
-        chart.getLegend().setItemFont(font);
+        chart.getCategoryPlot().getDomainAxis().setLabelFont(font); // X축 레이블 폰트
+        chart.getCategoryPlot().getRangeAxis().setLabelFont(font); // Y축 레이블 폰트
+        chart.getCategoryPlot().getDomainAxis().setTickLabelFont(font); // X축 눈금 폰트
+        chart.getCategoryPlot().getRangeAxis().setTickLabelFont(font); // Y축 눈금 폰트
+        chart.getLegend().setItemFont(font); // 범례 폰트
 
         // Swing으로 그래프 표시
-        JFrame frame = new JFrame("날씨와 자연재해");
+        JFrame frame = new JFrame("태풍 데이터 시각화");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // 차트 패널 추가

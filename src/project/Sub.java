@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 public class Sub {
     public static void main(String[] args) {
         // 재난 페이지 프레임 생성
-        JFrame frame = new JFrame("Disaster Information");
+        JFrame frame = new JFrame("날씨와 자연재해");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(400, 300);
         frame.setLayout(new BorderLayout());
@@ -23,7 +23,7 @@ public class Sub {
         buttonPanel.setLayout(new GridLayout(2, 1, 10, 10));
 
         // 폭염 여부 버튼
-        JButton heatWaveButton = new JButton("폭염 여부 확인");
+        JButton heatWaveButton = new JButton("폭염");
         heatWaveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -33,7 +33,7 @@ public class Sub {
         });
 
         // 한파 여부 버튼
-        JButton coldWaveButton = new JButton("한파 여부 확인");
+        JButton coldWaveButton = new JButton("한파");
         coldWaveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -42,8 +42,27 @@ public class Sub {
             }
         });
 
+        // 황사 여부 버튼
+        JButton yellowDustButton = new JButton("황사");
+        yellowDustButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                YellowDust.main(null);
+            }
+        });
+
+        JButton typhoonButton = new JButton("태풍");
+        typhoonButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TyphoonGraph.main(null);
+            }
+        });
+
         buttonPanel.add(heatWaveButton);
         buttonPanel.add(coldWaveButton);
+        buttonPanel.add(yellowDustButton);
+        buttonPanel.add(typhoonButton);
 
         frame.add(buttonPanel, BorderLayout.CENTER);
 

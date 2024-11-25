@@ -14,7 +14,7 @@ import org.w3c.dom.NodeList;
 public class Today {
     public static void main(String[] args) {
         // JFrame 생성
-        JFrame frame = new JFrame("Weather App");
+        JFrame frame = new JFrame("날씨와 자연재해");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 400); // 버튼 추가로 크기 조정
         frame.setLayout(new BorderLayout());
