@@ -91,84 +91,120 @@ public class Today {
 class TodaySub {
     public static String get(int x, int y, String[] v) {
         HttpURLConnection con = null;
-        String s = null;
+        String errorMessage = null;
 
         try {
-            LocalDateTime t = LocalDateTime.now().minusMinutes(30);
+            LocalDateTime now = LocalDateTime.now().minusMinutes(30); // 기준 시각 조정
+            String baseDate = now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            String baseTime = now.format(DateTimeFormatter.ofPattern("HHmm"));
 
             URL url = new URL(
                     "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
                             + "?ServiceKey=hp2nMhDfaycAzWeYtdBtAyoY4H4%2F8ArVQim7XrByjLDJ3c7rKKGbaD90YNoViKi7cuLt2RET3cyCIJqlfwzbeA%3D%3D"
                             + "&numOfRows=60"
-                            + "&base_date=" + t.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-                            + "&base_time=" + t.format(DateTimeFormatter.ofPattern("HHmm"))
+                            + "&pageNo=1"
+                            + "&dataType=XML"
+                            + "&base_date=" + baseDate
+                            + "&base_time=" + baseTime
                             + "&nx=" + x
                             + "&ny=" + y
             );
 
             con = (HttpURLConnection) url.openConnection();
-            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(con.getInputStream());
+            con.setRequestMethod("GET");
 
-            boolean ok = false;
-
-            Element e;
-            NodeList ns = doc.getElementsByTagName("header");
-            if (ns.getLength() > 0) {
-                e = (Element) ns.item(0);
-                if ("00".equals(e.getElementsByTagName("resultCode").item(0).getTextContent()))
-                    ok = true;
-                else
-                    s = e.getElementsByTagName("resultMsg").item(0).getTextContent();
+            if (con.getResponseCode() != 200) {
+                return "HTTP 에러: " + con.getResponseCode();
             }
 
-            if (ok) {
-                String fd = null, ft = null;
-                String pty = null;
-                String sky = null;
-                String cat;
-                String val;
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(con.getInputStream());
+            Element header = (Element) doc.getElementsByTagName("header").item(0);
 
-                ns = doc.getElementsByTagName("item");
-                for (int i = 0; i < ns.getLength(); i++) {
-                    e = (Element) ns.item(i);
+            String resultCode = header.getElementsByTagName("resultCode").item(0).getTextContent();
+            if (!"00".equals(resultCode)) {
+                return "API 에러: " + header.getElementsByTagName("resultMsg").item(0).getTextContent();
+            }
 
-                    if (ft == null) {
-                        fd = e.getElementsByTagName("fcstDate").item(0).getTextContent();
-                        ft = e.getElementsByTagName("fcstTime").item(0).getTextContent();
-                    } else if (!fd.equals(e.getElementsByTagName("fcstDate").item(0).getTextContent()) ||
-                            !ft.equals(e.getElementsByTagName("fcstTime").item(0).getTextContent()))
-                        continue;
+            NodeList items = doc.getElementsByTagName("item");
+            String forecastDate = null;
+            String forecastTime = null;
+            String precipitation = null;
+            String skyStatus = null;
 
-                    cat = e.getElementsByTagName("category").item(0).getTextContent();
-                    val = e.getElementsByTagName("fcstValue").item(0).getTextContent();
+            for (int i = 0; i < items.getLength(); i++) {
+                Element item = (Element) items.item(i);
 
-                    if ("PTY".equals(cat)) pty = val;
-                    else if ("SKY".equals(cat)) sky = val;
-                    else if ("T1H".equals(cat)) v[3] = val;
-                    else if ("REH".equals(cat)) v[4] = val;
+                String category = item.getElementsByTagName("category").item(0).getTextContent();
+                String value = item.getElementsByTagName("fcstValue").item(0).getTextContent();
+
+                if (forecastDate == null || forecastTime == null) {
+                    forecastDate = item.getElementsByTagName("fcstDate").item(0).getTextContent();
+                    forecastTime = item.getElementsByTagName("fcstTime").item(0).getTextContent();
                 }
 
-                v[0] = fd;
-                v[1] = ft;
+                switch (category) {
+                    case "PTY":
+                        precipitation = value;
+                        break;
+                    case "SKY":
+                        skyStatus = value;
+                        break;
+                    case "T1H":
+                        v[3] = value; // 기온
+                        break;
+                    case "REH":
+                        v[4] = value; // 습도
+                        break;
+                }
+            }
 
-                if ("0".equals(pty)) {
-                    if ("1".equals(sky)) v[2] = "맑음";
-                    else if ("3".equals(sky)) v[2] = "구름많음";
-                    else if ("4".equals(sky)) v[2] = "흐림";
-                } else if ("1".equals(pty)) v[2] = "비";
-                else if ("2".equals(pty)) v[2] = "비/눈";
-                else if ("3".equals(pty)) v[2] = "눈";
-                else if ("5".equals(pty)) v[2] = "빗방울";
-                else if ("6".equals(pty)) v[2] = "빗방울눈날림";
-                else if ("7".equals(pty)) v[2] = "눈날림";
+            v[0] = forecastDate;
+            v[1] = forecastTime;
+
+            if ("0".equals(precipitation)) {
+                switch (skyStatus) {
+                    case "1":
+                        v[2] = "맑음";
+                        break;
+                    case "3":
+                        v[2] = "구름많음";
+                        break;
+                    case "4":
+                        v[2] = "흐림";
+                        break;
+                }
+            } else {
+                switch (precipitation) {
+                    case "1":
+                        v[2] = "비";
+                        break;
+                    case "2":
+                        v[2] = "비/눈";
+                        break;
+                    case "3":
+                        v[2] = "눈";
+                        break;
+                    case "5":
+                        v[2] = "빗방울";
+                        break;
+                    case "6":
+                        v[2] = "빗방울눈날림";
+                        break;
+                    case "7":
+                        v[2] = "눈날림";
+                        break;
+                    default:
+                        v[2] = "알 수 없음";
+                }
             }
         } catch (Exception e) {
-            s = e.getMessage();
+            errorMessage = "예외 발생: " + e.getMessage();
+        } finally {
+            if (con != null) {
+                con.disconnect();
+            }
         }
 
-        if (con != null)
-            con.disconnect();
-
-        return s;
+        return errorMessage;
     }
 }

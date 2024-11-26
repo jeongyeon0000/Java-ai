@@ -14,7 +14,7 @@ public class Sub {
         frame.setLayout(new BorderLayout());
 
         // 상단 제목
-        JLabel titleLabel = new JLabel("재난 여부 확인", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("재난 확인", SwingConstants.CENTER);
         titleLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
         frame.add(titleLabel, BorderLayout.NORTH);
 
